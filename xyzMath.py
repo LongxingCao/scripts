@@ -885,6 +885,7 @@ class Xform(object):
         return X.R.rotation_axis()
 
     def rotation_axis_center(X):
+        # only for helical transitions???
         axis, ang = X.R.rotation_axis()
 
         # these points lie on a circle who's center is the center of rotation
