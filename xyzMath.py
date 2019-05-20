@@ -552,6 +552,11 @@ class Mat(object):
         return Vec(e1, e2, e3)
 
     def from_euler_angles(self, euler):
+        # this follows the ZXZ convension
+        # 1) rotate around Z by phi
+        # 2) rotate around X by theta
+        # 3) rotate around Z by psi
+        # added by Longxing at 2019-05-19
         phi = euler.x()
         psi = euler.y()
         theta = euler.z()
