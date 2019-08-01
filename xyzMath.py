@@ -324,7 +324,7 @@ class Mat(object):
             self.xx, self.xy, self.xz = 1.0, 0.0, 0.0
             self.yx, self.yy, self.yz = 0.0, 1.0, 0.0
             self.zx, self.zy, self.zz = 0.0, 0.0, 1.0
-            print type(self.xx)
+            print( type(self.xx) )
         elif xy is None and ismat(xx):
             if not isnum(xx.xx):
                 self.xx, self.xy, self.xz = xx.xx(), xx.xy(), xx.xz()
@@ -663,15 +663,15 @@ def test_rotation_mat():
                     (abs(a.x + a0.x) < 0.001 and abs(a.y + a0.y) < 0.001 and abs(a.z + a0.z) < 0.001):
                 continue
             else:
-                print a0
-                print a
+                print( a0 )
+                print( a )
                 return False
         if not abs(t - t0) < EPS or not (a.normalized() - a0.normalized()).length() < EPS:
-            print a0.normalized(), t0
-            print a.normalized(), t
-            print "FAIL"
+            print( a0.normalized(), t0 )
+            print( a.normalized(), t )
+            print( "FAIL" )
             return
-    print "test_rotation_mat PASS"
+    print( "test_rotation_mat PASS" )
 
 
 def randrot(n=None):
@@ -1756,7 +1756,7 @@ SYMICS = [
 
 def cyclic_axis(coords):
     if max(len(x) for x in coords) != min(len(x) for x in coords):
-        print "coord vectors not same length!", [len(x) for x in coords]
+        print( "coord vectors not same length!", [len(x) for x in coords] )
         return None
     cen = reduce(op.add, (x for c in coords for x in c), V0) / \
         len(coords[0] * len(coords))
@@ -1818,4 +1818,4 @@ if __name__ == '__main__':
 
     import doctest
     r = doctest.testmod()
-    print r
+    print( r )
