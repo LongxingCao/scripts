@@ -550,6 +550,10 @@ class Mat:
         # -sin_phi * c, -cos_phi * c ).
         e1 = math.atan2(self.zx, -self.zy)
         e2 = math.atan2(self.xz,  self.yz)
+
+        e1 += 2*pi if e1<0.0 else 0.0
+        e2 += 2*pi if e2<0.0 else 0.0
+
         return Vec(e1, e2, e3)
 
     def from_euler_angles(self, euler):
