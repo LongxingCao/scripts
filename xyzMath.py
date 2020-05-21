@@ -3,9 +3,11 @@ Easy 3D Linear Algebra, like xyz\* in rosetta
 """
 from random import gauss, uniform
 from math import pi, sqrt, sin, cos, acos, asin, atan2, degrees, radians, copysign
-from itertools import chain, product, izip
+from itertools import chain, product
 import math
 import operator as op
+
+import numpy
 
 EPS = 0.00001
 SQRTEPS = sqrt(EPS)
@@ -19,7 +21,7 @@ def isint(x):
 
 
 def isfloat(x):
-    return type(x) is float
+    return type(x) is float or type(x) is numpy.float64
 
 
 def isnum(x):
@@ -50,7 +52,7 @@ def isxform(x):
     return hasattr(x, "__Xform__")
 
 
-class Vec(object):
+class Vec:
     """a Vector like xyzVector<Real> in rosetta
 
     >>> v = Vec(1,2,3)
@@ -164,7 +166,7 @@ class Vec(object):
     def __neg__(u):
         return Vec(-u.x, -u.y, -u.z)
 
-    def __div__(u, a):
+    def __truediv__(u, a):
         return u * (1.0 / a)
 
     def __str__(self):
@@ -286,12 +288,12 @@ def rmsd(l, m):
     0.0
     """
     rmsd = 0.0
-    for u, v in izip(l, m):
+    for u, v in zip(l, m):
         rmsd += u.distance_squared(v)
     return sqrt(rmsd)
 
 
-class Mat(object):
+class Mat:
     """docstring for Mat
 
     >>> m = Mat(2,0,0,0,1,0,0,0,1)
@@ -324,7 +326,6 @@ class Mat(object):
             self.xx, self.xy, self.xz = 1.0, 0.0, 0.0
             self.yx, self.yy, self.yz = 0.0, 1.0, 0.0
             self.zx, self.zy, self.zz = 0.0, 0.0, 1.0
-            print( type(self.xx) )
         elif xy is None and ismat(xx):
             if not isnum(xx.xx):
                 self.xx, self.xy, self.xz = xx.xx(), xx.xy(), xx.xz()
@@ -419,7 +420,7 @@ class Mat(object):
         elif isvec(v):
             return Vec(m.colx() * v, m.coly() * v, m.colz() * v)
 
-    def __div__(m, v):
+    def __truediv__(m, v):
         return m * (1 / v)
 
     def __add__(m, v):
@@ -557,9 +558,9 @@ class Mat(object):
         # 2) rotate around X by theta
         # 3) rotate around Z by psi
         # added by Longxing at 2019-05-19
-        phi = euler.x()
-        psi = euler.y()
-        theta = euler.z()
+        phi = euler.x
+        psi = euler.y
+        theta = euler.z
         cos_phi = math.cos(phi)
         sin_phi = math.sin(phi)
         cos_psi = math.cos(psi)
@@ -680,7 +681,7 @@ def randrot(n=None):
     return (rotation_matrix_degrees(randnorm(), uniform(0, 1) * 360) for i in range(n))
 
 
-class Xform(object):
+class Xform:
     """Coordinate frame like rosetta Xform, behaves also as a rosetta Stub
 
     >>> x = Xform(R=Imat,t=Uz)
@@ -843,7 +844,7 @@ class Xform(object):
             return Xform(o * X.R, o * X.t)
         raise NotImplementedError
 
-    def __div__(X, o):
+    def __truediv__(X, o):
         if isxform(o):
             return X * ~o
         return o.__rdiv__(X)
@@ -1764,7 +1765,7 @@ def cyclic_axis(coords):
     axis = Vec(0, 0, 0)
     diserr = 0
     rand = randvec()
-    for xyzs in izip(*coords):
+    for xyzs in zip(*coords):
         a = reduce(op.add, (xyz - cen for xyz in xyzs)) / len(xyzs)
         da = a if a.dot(axis) > 0 else -a
         axis += da
