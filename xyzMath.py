@@ -558,6 +558,10 @@ class Mat:
         # 2) rotate around X by theta
         # 3) rotate around Z by psi
         # added by Longxing at 2019-05-19
+        # positive angle means clockwise rotation.
+        # This is really strange, as by convention, positive sign usually means counterclock wise rotation
+        # The xyzTransform would generate the transpose of the matrix
+        # which would be the inverse, that's really strange!!!!!!!!!!!!!
         phi = euler.x
         psi = euler.y
         theta = euler.z
