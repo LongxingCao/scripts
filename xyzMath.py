@@ -21,7 +21,7 @@ def isint(x):
 
 
 def isfloat(x):
-    return type(x) is float or type(x) is numpy.float64
+    return type(x) is float or type(x) is numpy.float64 or type(x) is numpy.float32
 
 
 def isnum(x):
